@@ -1,0 +1,19 @@
+name: Test
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - run: brew install hdf5 cmake
+
+      - run: git clone https://github.com/Unidata/netcdf-c
+
+      - run: |
+          curl -OL https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.7/LLVM-19.1.7-macOS-ARM64.tar.xz
+          tar xf *.tar.xz
+
+      - run: |
+          cmake -S netcdf-c -B build -DCMAKE_C_COMPILER="${PWD}/bin/clang"
+          cmake --build build -- -j

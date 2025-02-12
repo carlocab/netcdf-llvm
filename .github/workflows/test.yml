@@ -13,7 +13,10 @@ jobs:
       - run: |
           curl -OL https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.7/LLVM-19.1.7-macOS-ARM64.tar.xz
           tar xf *.tar.xz
+          echo "${PWD}/LLVM-19.1.7-macOS-ARM64/bin" >>"${GITHUB_PATH}"
+          echo "CC=clang" >>"${GITHUB_ENV}"
+          echo "CXX=clang++" >>"${GITHUB_ENV}"
 
       - run: |
-          cmake -S netcdf-c -B build -DCMAKE_C_COMPILER="${PWD}/bin/clang"
+          cmake -S netcdf-c -B build -DCMAKE_C_COMPILER="${PWD}/LLVM-19.1.7-macOS-ARM64/bin/clang"
           cmake --build build -- -j
